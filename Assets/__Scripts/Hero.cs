@@ -87,6 +87,7 @@ public class Hero : MonoBehaviour {
         if (Input.GetAxis("SwitchWeapon") == 1 && timeDifference > weaponSwitchCooldown)
         {
             Debug.Log("Switch weapons command triggered");
+            timeOfLastSwitch = currentTime;
             SwitchWeapons();
         }
     }
@@ -159,6 +160,9 @@ public class Hero : MonoBehaviour {
                     weaponLevels.Add(pu.type, 1);
                 }
 
+                currentWeapon = pu.type;
+                SetWeapons();
+
                 break;
         }
         pu.AbsorbedBy(gameObject);
@@ -216,6 +220,11 @@ public class Hero : MonoBehaviour {
             currentWeapon = ownedWeapons[0];
         }
 
+        SetWeapons();
+    }
+
+    void SetWeapons()
+    {
         ClearWeapons();
 
         int currentWeaponLevel = weaponLevels[currentWeapon];
