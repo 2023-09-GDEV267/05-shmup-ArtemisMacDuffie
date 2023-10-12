@@ -14,10 +14,14 @@ public class Hero : MonoBehaviour {
     public GameObject projectilePrefab;
     public float projectileSpeed = 40;
     public Weapon[] weapons;
+    public float weaponSwitchCooldown = 1.0f;
 
     [Header("Set Dynamically")]
     [SerializeField]
     public float _shieldLevel = 1;
+    public List<WeaponType> ownedWeapons;
+    public Dictionary<WeaponType, int> weaponLevels;
+    public WeaponType currentWeapon;
 
     // This variable holds a reference to the last triggering GameObject
     private GameObject lastTriggerGo = null;
@@ -27,7 +31,9 @@ public class Hero : MonoBehaviour {
     // Create a WeaponFireDelegate field named fireDelegate.
     public WeaponFireDelegate fireDelegate;
 
-	void Start()
+    private float timeOfLastSwitch;
+
+    void Start()
     {
         if (S == null)
         {
@@ -38,6 +44,13 @@ public class Hero : MonoBehaviour {
             Debug.LogError("Hero.Awake() - Attempted to assign second Hero.S!");
         }
         //fireDelegate += TempFire;
+
+        ownedWeapons = new List<WeaponType>();
+        weaponLevels = new Dictionary<WeaponType, int>();
+        ownedWeapons.Add(WeaponType.blaster);
+        weaponLevels.Add(WeaponType.blaster, 1);
+        currentWeapon = WeaponType.blaster;
+        timeOfLastSwitch = Time.time;
 
         // Reset the weapons to start _Hero with 1 blaster
         ClearWeapons();
@@ -66,6 +79,15 @@ public class Hero : MonoBehaviour {
         if (Input.GetAxis("Jump") == 1 && fireDelegate != null)
         {
             fireDelegate();
+        }
+
+        float currentTime = Time.time;
+        float timeDifference = currentTime - timeOfLastSwitch;
+
+        if (Input.GetAxis("SwitchWeapon") == 1 && timeDifference > weaponSwitchCooldown)
+        {
+            Debug.Log("Switch weapons command triggered");
+            SwitchWeapons();
         }
     }
 
@@ -108,21 +130,35 @@ public class Hero : MonoBehaviour {
                 break;
 
             default:
-                if(pu.type == weapons[0].type)
+                //if(pu.type == weapons[0].type)
+                //{
+                //    Weapon w = GetEmptyWeaponSlot();
+                //    if(w != null)
+                //    {
+                //        // Set it to pu.type
+                //        w.SetType(pu.type);
+                //    }
+                //}
+                //else
+                //{
+                //    //If this is a different weapon type
+                //    ClearWeapons();
+                //    weapons[0].SetType(pu.type);
+                //}
+
+                if (ownedWeapons.Contains(pu.type))
                 {
-                    Weapon w = GetEmptyWeaponSlot();
-                    if(w != null)
+                    if (weaponLevels[pu.type] < 5)
                     {
-                        // Set it to pu.type
-                        w.SetType(pu.type);
+                        weaponLevels[pu.type]++;
                     }
                 }
                 else
                 {
-                    //If this is a different weapon type
-                    ClearWeapons();
-                    weapons[0].SetType(pu.type);
+                    ownedWeapons.Add(pu.type);
+                    weaponLevels.Add(pu.type, 1);
                 }
+
                 break;
         }
         pu.AbsorbedBy(gameObject);
@@ -164,6 +200,29 @@ public class Hero : MonoBehaviour {
         foreach (Weapon w in weapons)
         {
             w.SetType(WeaponType.none);
+        }
+    }
+
+    void SwitchWeapons()
+    {
+        int newWeaponIndex = ownedWeapons.IndexOf(currentWeapon) + 1;
+        
+        if (newWeaponIndex < ownedWeapons.Count)
+        {
+            currentWeapon = ownedWeapons[newWeaponIndex];
+        }
+        else
+        {
+            currentWeapon = ownedWeapons[0];
+        }
+
+        ClearWeapons();
+
+        int currentWeaponLevel = weaponLevels[currentWeapon];
+
+        for (int i = 0; i < currentWeaponLevel; i++)
+        {
+            weapons[i].SetType(currentWeapon);
         }
     }
 }
