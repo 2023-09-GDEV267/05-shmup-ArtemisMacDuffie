@@ -12,6 +12,12 @@ public enum WeaponType
     none, // The default / no weapons
     blaster, // A simple blaster
     spread, // Two shots simultaneously
+    turboblaster, // More powerful but slower
+    vulcan, // Rapid-fire
+    pulse, // Burst-fire
+    wavecannon, // Wide projectile
+    railgun, // Fast projectile
+    railtrail, // Railgun aftereffect
     phaser, // [NI] Shots that move in waves
     missile, // [NI] Homing missiles
     laser, // [NI] Damage over time
@@ -38,6 +44,8 @@ public class WeaponDefinition
 }
 public class Weapon : MonoBehaviour {
     static public Transform PROJECTILE_ANCHOR;
+
+    public GameObject railTrail;
 
     [Header("Set Dynamically")]
     [SerializeField]
@@ -118,6 +126,8 @@ public class Weapon : MonoBehaviour {
         switch (type)
         {
             case WeaponType.blaster:
+            case WeaponType.vulcan:
+            case WeaponType.wavecannon:
                 p = MakeProjectile();
                 p.rigid.velocity = vel;
                 break;
@@ -132,7 +142,57 @@ public class Weapon : MonoBehaviour {
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.rigid.velocity = p.transform.rotation * vel;
                 break;
+
+            case WeaponType.turboblaster:
+                p = MakeProjectile();
+                p.transform.localScale = new Vector3(2, 2, 2);
+                p.rigid.velocity = vel;
+                break;
+
+            case WeaponType.pulse:
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+                Invoke("PulseShot", 0.05f);
+                Invoke("PulseShot", 0.1f);
+                break;
+
+            case WeaponType.railgun:
+                p = MakeProjectile();
+                p.rigid.velocity = vel;
+                for (int i = 0; i < 10; i++)
+                {
+                    float time = i / 100f;
+                    Invoke("RailShot", time);
+                }
+
+                break;
         }
+    }
+
+    private void PulseShot()
+    {
+        Vector3 vel = Vector3.up * def.velocity;
+        if (transform.up.y < 0)
+        {
+            vel.y = -vel.y;
+        }
+        Projectile p = MakeProjectile();
+        p.rigid.velocity = vel;
+    }
+
+    private void RailShot()
+    {
+        Vector3 vel = Vector3.up * def.velocity;
+        if (transform.up.y < 0)
+        {
+            vel.y = -vel.y;
+        }
+
+        GameObject go = Instantiate<GameObject>(railTrail);
+        go.transform.position = collar.transform.position;
+        Projectile p = go.GetComponent<Projectile>();
+        p.type = WeaponType.railtrail;
+        p.rigid.velocity = vel;
     }
 
     public Projectile MakeProjectile()

@@ -383,7 +383,7 @@ MonoBehaviour:
     projectilePrefab: {fileID: 1899541879965282, guid: 59a4640edad59f94a87c1d235355cb6a,
       type: 3}
     projectileColor: {r: 1, g: 1, b: 1, a: 1}
-    damageOnHit: 1
+    damageOnHit: 3
     continuousDamage: 0
     delayBetweenShots: 0.2
     velocity: 50
@@ -397,7 +397,67 @@ MonoBehaviour:
     continuousDamage: 0
     delayBetweenShots: 0.4
     velocity: 50
+  - type: 3
+    letter: T
+    color: {r: 1, g: 0, b: 0, a: 1}
+    projectilePrefab: {fileID: 1899541879965282, guid: 59a4640edad59f94a87c1d235355cb6a,
+      type: 3}
+    projectileColor: {r: 1, g: 0, b: 0, a: 1}
+    damageOnHit: 8
+    continuousDamage: 0
+    delayBetweenShots: 0.6
+    velocity: 50
+  - type: 4
+    letter: V
+    color: {r: 0, g: 1, b: 1, a: 1}
+    projectilePrefab: {fileID: 1899541879965282, guid: 59a4640edad59f94a87c1d235355cb6a,
+      type: 3}
+    projectileColor: {r: 0, g: 1, b: 1, a: 1}
+    damageOnHit: 1
+    continuousDamage: 0
+    delayBetweenShots: 0.05
+    velocity: 50
   - type: 6
+    letter: W
+    color: {r: 1, g: 0.5019608, b: 0, a: 1}
+    projectilePrefab: {fileID: 1899541879965282, guid: 56eb07a78e44b2d43989ab9bcf0e258a,
+      type: 3}
+    projectileColor: {r: 1, g: 0.5019608, b: 0.02745098, a: 1}
+    damageOnHit: 3
+    continuousDamage: 0
+    delayBetweenShots: 0.3
+    velocity: 40
+  - type: 5
+    letter: P
+    color: {r: 0, g: 0, b: 1, a: 1}
+    projectilePrefab: {fileID: 1899541879965282, guid: 59a4640edad59f94a87c1d235355cb6a,
+      type: 3}
+    projectileColor: {r: 0, g: 0, b: 1, a: 1}
+    damageOnHit: 2
+    continuousDamage: 0
+    delayBetweenShots: 0.4
+    velocity: 50
+  - type: 7
+    letter: R
+    color: {r: 1, g: 0, b: 1, a: 1}
+    projectilePrefab: {fileID: 1899541879965282, guid: 59a4640edad59f94a87c1d235355cb6a,
+      type: 3}
+    projectileColor: {r: 1, g: 0, b: 1, a: 1}
+    damageOnHit: 12
+    continuousDamage: 0
+    delayBetweenShots: 0.8
+    velocity: 150
+  - type: 8
+    letter: X
+    color: {r: 1, g: 0.49019608, b: 1, a: 0.5019608}
+    projectilePrefab: {fileID: 1899541879965282, guid: 7b7f2da453790a548ae7be96629fd2b6,
+      type: 3}
+    projectileColor: {r: 1, g: 0.4901961, b: 1, a: 0.5019608}
+    damageOnHit: 0
+    continuousDamage: 0
+    delayBetweenShots: 0
+    velocity: 0
+  - type: 12
     letter: O
     color: {r: 0, g: 1, b: 0.024693727, a: 1}
     projectilePrefab: {fileID: 0}
@@ -408,7 +468,7 @@ MonoBehaviour:
     velocity: 0
   prefabPowerUp: {fileID: 1062273549804748, guid: 9649a9a79085a854d9990613a980f435,
     type: 3}
-  powerUpFrequency: 01000000010000000200000006000000
+  powerUpFrequency: 0c0000000100000002000000030000000400000006000000070000000500000001000000010000000c0000000c000000
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
@@ -949,6 +1009,12 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 114684557380802588, guid: d38b8bdef6bb4724e9a7341bda0aad27,
+        type: 3}
+      propertyPath: rgTrail
+      value: 
+      objectReference: {fileID: 114815219274589806, guid: 6eaf30e4f7177c848a014d2e47aa5b9c,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
